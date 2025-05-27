@@ -1,0 +1,169 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text text-center">
+                    <h2>Dashboard</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section spad">
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Upcoming & Ongoing Events -->
+            <div class="col-lg-12">
+                <h2 class="text-center mb-4">Upcoming & Ongoing Events</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                                <th>Visibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in events %}
+                                {% if event.date >= today %}
+                                <tr>
+                                    <td><strong>{{ event.name }}</strong></td>
+                                    <td>{{ event.date }}</td>
+                                    <td>{{ event.time }}</td>
+                                    <td>{{ event.location }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if event.visibility %} badge-primary 
+                                            {% else %} badge-secondary 
+                                            {% endif %}">
+                                            {{ event.get_visibility_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-muted">No upcoming or ongoing events.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- All Matches & Scores -->
+            <div class="col-lg-12 mt-5">
+                <h2 class="text-center mb-4">All Matches & Scores</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Event</th>
+                                <th>Team 1</th>
+                                <th>Score</th>
+                                <th>Team 2</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in matches %}
+                            <tr>
+                                <td>{{ match.event.name }}</td>
+                                <td>{{ match.team1 }}</td>
+                                <td><strong>{{ match.score_team1 }} - {{ match.score_team2 }}</strong></td>
+                                <td>{{ match.team2 }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if match.status == 'Upcoming' %} badge-warning 
+                                        {% elif match.status == 'Ongoing' %} badge-primary 
+                                        {% elif match.status == 'Finished' %} badge-success 
+                                        {% endif %}">
+                                        {{ match.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-muted">No matches found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Results (Finished Matches) -->
+            <div class="col-lg-12 mt-5">
+                <h2 class="text-center mb-4">Recent Results</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Event</th>
+                                <th>Winner</th>
+                                <th>Final Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in matches %}
+                                {% if match.status == 'Finished' %}
+                                <tr>
+                                    <td>{{ match.event.name }}</td>
+                                    <td>
+                                        {% if match.score_team1 > match.score_team2 %}
+                                            {{ match.team1 }}
+                                        {% elif match.score_team2 > match.score_team1 %}
+                                            {{ match.team2 }}
+                                        {% else %}
+                                            Draw
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ match.score_team1 }} - {{ match.score_team2 }}</strong></td>
+                                </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-muted">No results available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Breadcrumb Background */
+    .breadcrumb-section {
+        background-size: cover;
+        background-position: center;
+        padding: 50px 0;
+    }
+    /* Table Styling */
+    .table th, .table td {
+        vertical-align: middle;
+    }
+    .table th {
+        background-color: #343a40 !important;
+        color: #fff;
+    }
+    .badge {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+</style>
+
+{% endblock %}

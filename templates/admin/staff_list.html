@@ -1,0 +1,84 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Display Messages -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-success{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Breadcrumb Section -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2 class="text-white">Staff Verification</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Staff Verification Table -->
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>Staff Verification</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for staff in staff_members %}
+                        <tr>
+                            <td>{{ staff.user.username }}</td>
+                            <td>{{ staff.user.first_name }} {{ staff.user.last_name }}</td>
+                            <td>{{ staff.phone }}</td>
+                            <td>{{ staff.address }}</td>
+                            <td>
+                                {% if staff.is_active %}
+                                    <span class="badge bg-success">Approved</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not staff.is_active %}
+                                    <a href="{% url 'approve_staff' staff.id %}" class="btn btn-success btn-sm">Approve</a>
+                                    <a href="{% url 'reject_staff' staff.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                {% else %}
+                                    <span class="text-muted">Approved</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No staff members found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

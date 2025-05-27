@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Upcoming Public Events</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="events-section spad">
+    <div class="container mt-5">
+        <h2>Public Events</h2>
+        {% if public_events %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in public_events %}
+                        <tr>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>{{ event.time }}</td>
+                            <td>{{ event.location }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No public events available.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

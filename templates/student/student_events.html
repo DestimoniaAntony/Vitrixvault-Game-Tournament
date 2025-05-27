@@ -1,0 +1,57 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Event List</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<section class="student-events-section spad">
+    <div class="container mt-5">
+        <h2>My Events</h2>
+        {% if events %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Visibility</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>{{ event.time }}</td>
+                            <td>{{ event.location }}</td>
+                            <td>{{ event.get_visibility_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You are not registered for any events yet.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

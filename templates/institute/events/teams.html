@@ -1,0 +1,10 @@
+<h2>{{ event.name }} - Teams</h2>
+
+{% for team in teams %}
+    <h3>Team {{ team.team_number }}</h3>
+    <ul>
+        {% for student in team.members.all %}
+            <li>{{ student.user.first_name }} {{ student.user.last_name }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}

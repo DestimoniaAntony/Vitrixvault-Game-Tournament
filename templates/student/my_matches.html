@@ -1,0 +1,128 @@
+{% extends 'student/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text text-center">
+                    <h2>My Events & Matches</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if messages %}
+    <div class="container mt-3">
+        <div class="alert alert-success">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+<section class="student-events-section spad">
+    <div class="container mt-5">
+        <div class="row">
+            <!-- My Teams Section -->
+            <div class="col-lg-12">
+                <h2 class="text-center mb-4">My Teams</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Team Number</th>
+                                <th>Event</th>
+                                <th>Members</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for team in my_teams %}
+                            <tr>
+                                <td><strong>Team {{ team.team_number }}</strong></td>
+                                <td>{{ team.event.name }}</td>
+                                <td>
+                                    {% for member in team.members.all %}
+                                        {{ member.user.first_name }} {{ member.user.last_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-muted">No teams found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- My Matches Section -->
+            <div class="col-lg-12 mt-5">
+                <h2 class="text-center mb-4">My Matches</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Event</th>
+                                <th>Team 1</th>
+                                <th>Score</th>
+                                <th>Team 2</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in matches %}
+                            <tr>
+                                <td>{{ match.event.name }}</td>
+                                <td>{{ match.team1 }}</td>
+                                <td><strong>{{ match.score_team1 }} - {{ match.score_team2 }}</strong></td>
+                                <td>{{ match.team2 }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if match.status == 'Upcoming' %} badge-warning 
+                                        {% elif match.status == 'Ongoing' %} badge-primary 
+                                        {% elif match.status == 'Finished' %} badge-success 
+                                        {% endif %}">
+                                        {{ match.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-muted">No matches found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Breadcrumb background */
+    .breadcrumb-section {
+        background-size: cover;
+        background-position: center;
+        padding: 50px 0;
+    }
+    /* Table Styling */
+    .table th, .table td {
+        vertical-align: middle;
+    }
+    .table th {
+        background-color: #343a40 !important;
+        color: #fff;
+    }
+    .badge {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+</style>
+
+{% endblock %}

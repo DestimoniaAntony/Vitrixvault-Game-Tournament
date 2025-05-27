@@ -1,0 +1,43 @@
+{% extends 'institute/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>{% if student %}Edit{% else %}Register{% endif %} Student</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact-section spad">
+
+<div class="container mt-5">
+    <h1>{% if student %}Edit{% else %}Register{% endif %} Student</h1>
+
+    <!-- Display Form Errors -->
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>There were errors with your submission:</strong>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if student %}Update{% else %}Register{% endif %} Student</button>
+    </form>
+</div>
+
+</section>
+{% endblock %}

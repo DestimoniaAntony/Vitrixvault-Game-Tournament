@@ -1,0 +1,69 @@
+{% extends 'institute/base.html' %}
+{% load static %}
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Student List</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% if messages %}
+<div class="alert alert-success">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Student List</div>
+                <div class="card-body">
+                    {% if students %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Games</th>
+            <th>Full Name</th>
+            <th>Roll Number</th>
+            <th>Course</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>
+                {% for event in student.events.all %}
+                    {{ event.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+            <td>{{ student.roll_number }}</td>
+            <td>{{ student.course }}</td>
+            <td>{{ student.phone }}</td>
+            <td>
+                <a href="{% url 'edit_student' student.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_student' student.id %}" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No students found for this institution.</p>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<br>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'institute/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Breadcrumb Section -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="bs-text">
+                    <h2 class="text-white font-weight-bold">Event Details</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if messages %}
+    <div class="alert alert-success text-center mt-3">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Event Details Section -->
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary font-weight-bold">{{ event.name }}</h2>
+        <p class="text-muted text-center"><strong>Date:</strong> {{ event.date }} | <strong>Location:</strong> {{ event.location }}</p>
+        <p class="text-dark text-center">{{ event.description }}</p>
+
+        <!-- Generate Matches Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'generate_matches' event.id %}" class="btn btn-success btn-lg">
+                Generate Matches
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Teams Section -->
+<div class="container mt-5">
+    <h3 class="text-center text-dark font-weight-bold">Registered Teams</h3>
+    {% if teams %}
+    <div class="row justify-content-center">
+        {% for team in teams %}
+        <div class="col-md-4">
+            <div class="card border-primary mb-3 text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Team {{ team.team_number }}</h5>
+                    <p class="text-muted">{{ team.event.name }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="text-center text-danger">No teams registered yet.</p>
+    {% endif %}
+</div>
+
+<!-- Matches Section -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Match Schedule</div>
+                <div class="card-body">
+    <h3 class="text-center text-dark font-weight-bold">Match Schedule</h3>
+    {% if matches %}
+        <div class="table-responsive">
+            <table class="table text-center shadow-lg rounded">
+                <thead class="thead-light" style="background: linear-gradient(135deg, #007bff, #00c6ff); color: white;">
+                    <tr>
+                        <th class="p-3">Match</th>
+                        <th class="p-3">Status</th>
+                        <th class="p-3">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in matches %}
+                    <tr class="align-middle" style="transition: 0.3s ease-in-out;">
+                        <td class="p-3"><strong>{{ match.team1 }}</strong> vs <strong>{{ match.team2 }}</strong></td>
+                        <td class="p-3">
+                            <span class="badge 
+                                {% if match.status == 'Upcoming' %} bg-info text-dark 
+                                {% elif match.status == 'Ongoing' %} bg-warning text-dark 
+                                {% else %} bg-success text-white {% endif %} px-3 py-2">
+                                {{ match.status }}
+                            </span>
+                        </td>
+                        <td class="p-3 fw-bold" style="font-size: 18px; background: rgba(0, 123, 255, 0.1); border-radius: 8px;">
+                            {{ match.score_team1 }} - {{ match.score_team2 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center text-danger">No matches scheduled yet.</p>
+    {% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
