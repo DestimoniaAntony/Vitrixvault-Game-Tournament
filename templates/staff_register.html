@@ -2,6 +2,46 @@
 {% load static %}
 {% block content %}
 
+<style>
+    /* Scoped styles to enhance the Staff Registration UI */
+    .staff-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .staff-card .card-header {
+        background: linear-gradient(90deg,#142747,#030107);
+        border-bottom: none;
+        padding: 1rem 1.25rem;
+    }
+    .staff-card .card-header h3 {
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: .2px;
+        color: #fff;
+    }
+    .input-icon { width:42px; display:flex; align-items:center; justify-content:center; }
+    .input-icon i { color:#6b7280; }
+    .card-body form .mb-3 label { font-weight:600; }
+    .card-body form input, .card-body form textarea, .card-body form select {
+        border-radius: 8px;
+        padding: 10px 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: none;
+        transition: border-color .15s, box-shadow .15s, transform .05s;
+    }
+    .card-body form input:focus, .card-body form textarea:focus, .card-body form select:focus{
+        border-color:#7c3aed;
+        box-shadow:0 0 0 0.15rem rgba(124,58,237,0.12);
+        outline: none;
+        transform: translateY(-1px);
+    }
+    .helper-note { font-size:0.95rem; color:#6b7280; margin-bottom:8px; }
+    @media (max-width:576px){
+        .input-icon { width:38px }
+    }
+</style>
+
 <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
     <div class="container">
         <div class="row">
@@ -16,50 +56,98 @@
 <section class="contact-section spad">
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg">
-                    <div class="card-header bg-primary text-white text-center">
+            <div class="col-md-12">
+                <div class="card shadow-lg staff-card">
+                    <div class="card-header text-center">
                         <h3>Staff Registration</h3>
                     </div>
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
-    
+
+                            <p class="helper-note">Create an account for staff members. Use a strong password.</p>
+
+                            {# Top-level summary of errors (server-side or client-side) #}
+                            {% if form.errors %}
+                                <div id="form-error-summary" class="alert alert-danger">
+                                    <strong>Please fix the following errors:</strong>
+                                    <ul class="mb-0">
+                                    {% for field, errs in form.errors.items %}
+                                        {% for err in errs %}
+                                            <li>{{ field }}: {{ err }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <div id="form-error-summary" class="alert alert-danger d-none"></div>
+                            {% endif %}
+
                             <div class="mb-3">
                                 <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                                {{ form.username }}
+                                <div class="input-group">
+                                    <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-user"></i></span>
+                                    {{ form.username }}
+                                </div>
+                                    <div class="invalid-feedback field-error" data-field="username"></div>
                             </div>
-    
-                            <div class="mb-3">
-                                <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
-                                {{ form.first_name }}
+
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-id-badge"></i></span>
+                                        {{ form.first_name }}
+                                    </div>
+                                    <div class="invalid-feedback field-error" data-field="first_name"></div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-id-badge"></i></span>
+                                        {{ form.last_name }}
+                                    </div>
+                                    <div class="invalid-feedback field-error" data-field="last_name"></div>
+                                </div>
                             </div>
-    
-                            <div class="mb-3">
-                                <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
-                                {{ form.last_name }}
-                            </div>
-    
+
                             <div class="mb-3">
                                 <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-                                {{ form.email }}
+                                <div class="input-group">
+                                    <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-envelope"></i></span>
+                                    {{ form.email }}
+                                </div>
+                                    <div class="invalid-feedback field-error" data-field="email"></div>
                             </div>
-    
-                            <div class="mb-3">
-                                <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
-                                {{ form.phone }}
+
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-phone"></i></span>
+                                        {{ form.phone }}
+                                    </div>
+                                    <div class="invalid-feedback field-error" data-field="phone"></div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-map-marker"></i></span>
+                                        {{ form.address }}
+                                    </div>
+                                    <div class="invalid-feedback field-error" data-field="address"></div>
+                                </div>
                             </div>
-    
-                            <div class="mb-3">
-                                <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
-                                {{ form.address }}
-                            </div>
-    
+
                             <div class="mb-3">
                                 <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-                                {{ form.password }}
+                                <div class="input-group">
+                                    <span class="input-group-text input-icon bg-light border-0"><i class="fa fa-lock"></i></span>
+                                    {{ form.password }}
+                                </div>
+                                    <div class="invalid-feedback field-error" data-field="password"></div>
                             </div>
-    
+
                             <button type="submit" class="btn btn-primary w-100">Register</button>
                         </form>
                     </div>
@@ -69,5 +157,119 @@
     </div>
     
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const form = document.querySelector('.card-body form');
+    if(!form) return;
+    form.querySelectorAll('input, textarea, select').forEach(function(el){
+        if(!el.classList.contains('form-control')) el.classList.add('form-control');
+        if(!el.placeholder){
+            const id = el.id || el.name;
+            if(id){
+                const label = form.querySelector('label[for="'+id+'"]');
+                if(label) el.placeholder = label.textContent.trim();
+            }
+        }
+    });
+});
+</script>
+
+<script>
+// Inline client-side validation for staff register form
+;(function(){
+    const form = document.querySelector('.card-body form');
+    if(!form) return;
+
+    const nameRegex = /^[A-Za-z ]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    function getField(name){
+        return form.querySelector('[name="'+name+'"]');
+    }
+
+    function setError(fieldEl, msg){
+        if(!fieldEl) return;
+        fieldEl.classList.add('is-invalid');
+        const errEl = form.querySelector('.field-error[data-field="'+fieldEl.name+'"]');
+        if(errEl) errEl.textContent = msg;
+    }
+
+    function clearError(fieldEl){
+        if(!fieldEl) return;
+        fieldEl.classList.remove('is-invalid');
+        const errEl = form.querySelector('.field-error[data-field="'+fieldEl.name+'"]');
+        if(errEl) errEl.textContent = '';
+    }
+
+    function validateField(name){
+        const el = getField(name);
+        if(!el) return true;
+        const val = (el.value || '').trim();
+
+        // first_name & last_name are required and letters/spaces only
+        if(name === 'first_name' || name === 'last_name'){
+            if(!val){
+                setError(el, (name==='first_name'? 'First name is required.' : 'Last name is required.'));
+                return false;
+            }
+            if(!nameRegex.test(val)){
+                setError(el, 'May contain only letters and spaces.');
+                return false;
+            }
+            clearError(el);
+            return true;
+        }
+
+        // phone is optional but must be exactly 10 digits when present
+        if(name === 'phone'){
+            if(!val){ clearError(el); return true; }
+            if(!phoneRegex.test(val)){
+                setError(el, 'Phone must be exactly 10 digits.');
+                return false;
+            }
+            clearError(el);
+            return true;
+        }
+
+        // default: clear errors
+        clearError(el);
+        return true;
+    }
+
+    // Live validation on input
+    ['first_name','last_name','phone'].forEach(function(name){
+        const el = getField(name);
+        if(!el) return;
+        el.addEventListener('input', function(){ validateField(name); });
+        el.addEventListener('blur', function(){ validateField(name); });
+    });
+
+    form.addEventListener('submit', function(e){
+        let ok = true;
+        ['first_name','last_name','phone'].forEach(function(name){
+            if(!validateField(name)) ok = false;
+        });
+        if(!ok){
+            e.preventDefault();
+            // focus first invalid
+            const firstInvalid = form.querySelector('.is-invalid');
+            if(firstInvalid) firstInvalid.focus();
+            // populate top-level summary with client-side messages
+            const summary = document.getElementById('form-error-summary');
+            if(summary){
+                const messages = [];
+                form.querySelectorAll('.field-error').forEach(function(el){
+                    if(el.textContent && el.textContent.trim()) messages.push(el.textContent.trim());
+                });
+                if(messages.length){
+                    summary.classList.remove('d-none');
+                    summary.innerHTML = '<strong>Please fix the following errors:</strong><ul class="mb-0"><li>' + messages.join('</li><li>') + '</li></ul>';
+                }
+            }
+        }
+    });
+})();
+</script>
 
 {% endblock %}

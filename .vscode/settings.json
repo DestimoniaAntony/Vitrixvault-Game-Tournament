@@ -1,0 +1,11 @@
+{
+    "editor.codeActionsOnSave": {
+        
+    },
+    "chat.promptFilesRecommendations": {
+        
+    },
+    "chat.promptFilesLocations": {
+        ".github/prompts": false
+    }
+}

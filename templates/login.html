@@ -12,34 +12,171 @@
         </div>
     </div>
 </section>
-<section class="contact-section spad">
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">Login</div>
-                <div class="card-body">
-                    {% if messages %}
-                        <div class="alert alert-danger">
-                            {% for message in messages %}
-                                {{ message }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
 
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
+<section class="contact-section spad" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 600px; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg rounded-lg border-0" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95);">
+                    <!-- Card Header -->
+                    <div class="card-header text-center fw-bold py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px 10px 0 0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🎮</div>
+                        <h3 class="mb-0" style="font-size: 28px;">VictriXVault</h3>
+                        <p class="mb-0 mt-2" style="font-size: 14px; opacity: 0.9;">Tournament Management</p>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body p-5">
+                        {% if messages %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px; border: none; background-color: #f8d7da; color: #721c24;">
+                                <i class="fa fa-exclamation-circle me-2"></i>
+                                {% for message in messages %}
+                                    <strong>{{ message }}</strong>
+                                {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Username Field -->
+                            <div class="mb-4">
+                                <label for="id_username" class="form-label fw-bold" style="color: #333; font-size: 14px; letter-spacing: 0.5px;">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background: transparent; border: 2px solid #e0e0e0;">
+                                        <i class="fa fa-user" style="color: #667eea;"></i>
+                                    </span>
+                                    <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" 
+                                           style="border: 2px solid #e0e0e0; border-left: none; padding: 12px; font-size: 15px;" 
+                                           required autofocus>
+                                </div>
+                                {% if form.username.errors %}
+                                    <small class="text-danger d-block mt-2">{{ form.username.errors }}</small>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="mb-4">
+                                <label for="id_password" class="form-label fw-bold" style="color: #333; font-size: 14px; letter-spacing: 0.5px;">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background: transparent; border: 2px solid #e0e0e0;">
+                                        <i class="fa fa-lock" style="color: #667eea;"></i>
+                                    </span>
+                                    <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" 
+                                           style="border: 2px solid #e0e0e0; border-left: none; padding: 12px; font-size: 15px;" 
+                                           required>
+                                </div>
+                                {% if form.password.errors %}
+                                    <small class="text-danger d-block mt-2">{{ form.password.errors }}</small>
+                                {% endif %}
+                            </div>
+
+                            <!-- Remember Me Checkbox -->
+                            <!-- <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" style="cursor: pointer; width: 18px; height: 18px;">
+                                    <label class="form-check-label" for="rememberMe" style="cursor: pointer; color: #666; font-size: 14px;">
+                                        Remember me
+                                    </label>
+                                </div>
+                            </div> -->
+
+                            <!-- Login Button -->
+                            <button type="submit" class="btn w-100 fw-bold py-3" 
+                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                                <i class="fa fa-sign-in me-2"></i> LOGIN NOW
+                            </button>
+
+                            <!-- Hover Effect -->
+                            <script>
+                                document.querySelector('button[type="submit"]').addEventListener('mouseover', function() {
+                                    this.style.boxShadow = '0 6px 25px rgba(102, 126, 234, 0.6)';
+                                    this.style.transform = 'translateY(-2px)';
+                                });
+                                document.querySelector('button[type="submit"]').addEventListener('mouseout', function() {
+                                    this.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                                    this.style.transform = 'translateY(0)';
+                                });
+                            </script>
+                        </form>
+
+                        <!-- Divider -->
+                        <div class="my-4" style="display: flex; align-items: center; color: #999;">
+                            <div style="flex: 1; height: 1px; background: #e0e0e0;"></div>
+                            <div style="padding: 0 15px; font-size: 13px;">Or</div>
+                            <div style="flex: 1; height: 1px; background: #e0e0e0;"></div>
+                        </div>
+
+                        <!-- Info Section -->
+                        <div class="mt-4 p-3" style="background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                            <p style="font-size: 13px; color: #666; margin: 0;">
+                                <i class="fa fa-info-circle me-2" style="color: #667eea;"></i>
+                                <strong>New user?</strong> Contact your institution administrator to register.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Info -->
+                <div class="text-center mt-4" style="color: #666; font-size: 13px;">
+                    <p style="margin: 0; opacity: 0.8;">© 2025 VictriXVault. All rights reserved.</p>
+                    <p style="margin: 5px 0 0 0; opacity: 0.6;">Secure Tournament Management System</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<br>
-<br>
-<br>
 </section>
+
+<style>
+    /* Input Focus Effects */
+    .form-control:focus,
+    .form-control:hover {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+    }
+
+    .form-control::placeholder {
+        color: #bbb;
+    }
+
+    /* Smooth Transitions */
+    .form-control,
+    .input-group-text {
+        transition: all 0.3s ease;
+    }
+
+    .input-group-text:has(+ .form-control:focus) {
+        background-color: #f8f9fa;
+        border-color: #667eea !important;
+    }
+
+    /* Animation for the card */
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        animation: slideUp 0.6s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 30px !important;
+        }
+        
+        .card-header {
+            padding: 25px 0 !important;
+        }
+    }
+</style>
+
 {% endblock %}

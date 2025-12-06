@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os.path
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-et4)vd%$l8u-na$v6!jz4rc=hk9ua#st@)uoz*+rz=pky&+o2q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Make DEBUG configurable via an environment variable so you can run locally
+# with `DJANGO_DEBUG=True` and keep `DEBUG=False` in production.
+# Example (PowerShell):
+#   $env:DJANGO_DEBUG = 'True'; python manage.py runserver
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -37,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'Victrix_app',
     'admin_app',
     'staff_app',
@@ -48,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,6 +145,13 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
 STATIC_ROOT=os.path.join(BASE_DIR, 'assets')
+# WhiteNoise: efficiently serve static files when DEBUG=False
+# During development, ManifestStaticFilesStorage can fail if referenced files
+# (like source maps) are missing. Use the plain StaticFilesStorage locally
+# to avoid "Missing staticfiles manifest entry" errors. For production,
+# switch back to the compressed/manifest storage and ensure collectstatic
+# completes successfully.
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 

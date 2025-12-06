@@ -1,8 +1,11 @@
 from django.db import models
 
 from django.contrib.auth.models import User
-
+from django.core.validators import RegexValidator
 from staff_app.models import Institution
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+import re
 # Create your models here.
 
 
@@ -32,10 +35,15 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='students')
     events = models.ManyToManyField(Event, related_name='students')
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(
+    max_length=15,
+    validators=[
+        RegexValidator(r'^\d{10,15}$', "Phone number must be 10–15 digits.")
+    ]
+    )
     address = models.TextField()
     date_of_birth = models.DateField()
-    roll_number = models.CharField(max_length=20, unique=True)
+    roll_number = models.PositiveIntegerField()
     course = models.CharField(max_length=100)
     password = models.CharField(max_length=128)  # Storing plain password for reference
     created_at = models.DateTimeField(auto_now_add=True)

@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="bs-text">
-                    <h2>Add Event</h2>
+                    <h2>Add Game</h2>
                 </div>
             </div>
         </div>
@@ -16,12 +16,104 @@
 <section class="contact-section spad">
 
 <div class="container mt-4">
-    <h2>Add Event</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Add Event</button>
-    </form>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Add Game</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Game Name</label>
+                                {{ form.name }}
+                                {% for err in form.name.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Game Date</label>
+                                {{ form.date }}
+                                {% for err in form.date.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Game Time</label>
+                                {{ form.time }}
+                                {% for err in form.time.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Visibility</label>
+                                {{ form.visibility }}
+                                {% for err in form.visibility.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Team Size</label>
+                                {{ form.team_size }}
+                                {% for err in form.team_size.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- <div class="col-md-6">
+                                <label class="form-label">Max Participants</label>
+                                {{ form.max_participants }}
+                                {% for err in form.max_participants.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div> -->
+
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                {{ form.location }}
+                                {% for err in form.location.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Rules</label>
+                                {{ form.rules }}
+                                {% for err in form.rules.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                {{ form.description }}
+                                {% for err in form.description.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div> 
+
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Add Game</button>
+                            <a href="{% url 'event_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </section>
 {% endblock %}

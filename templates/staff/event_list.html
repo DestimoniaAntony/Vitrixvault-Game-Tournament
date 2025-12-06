@@ -1,0 +1,69 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Games List</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Games List</div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+
+
+        <thead>
+            <tr>
+                <th>Game Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Team Size</th>
+                <th>Visibility</th>
+                <th>Institution</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.time }}</td>
+                <td>{{ event.location }}</td>
+                <td>{{ event.team_size }}</td>
+                <td>{% if event.visibility %} Public {% else %} Private {% endif %}</td>
+                <td>{{ event.created_by.name }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-danger fw-bold">No games found for your institutions.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

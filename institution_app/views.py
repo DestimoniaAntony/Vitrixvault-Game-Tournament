@@ -333,7 +333,15 @@ def generate_matches(request, event_id):
 
 
 def match_list(request):
-    matches = Match.objects.all()
+    try:
+        institution = Institution.objects.get(user=request.user)
+        # Get all events created by this institution
+        institution_events = Event.objects.filter(created_by=institution)
+        # Get matches only from those events
+        matches = Match.objects.filter(event__in=institution_events)
+    except Institution.DoesNotExist:
+        matches = Match.objects.none()
+    
     return render(request, 'institute/match_list.html', {'matches': matches})
 
 

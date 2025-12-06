@@ -37,6 +37,9 @@
                     <div class="col-lg-2">
                         <div class="logo">
                             <h4 style="color:white;">VictriXVault </h4>
+                            <!-- {% if user.is_authenticated %}
+                            <p class="text-white small mb-0">Hi {{ user.first_name|default:user.username }}</p>
+                            {% endif %} -->
                         </div>
                     </div>
                     <div class="col-lg-10">
@@ -63,8 +66,22 @@
                                     </ul>
                                 </li>
 
-                                <li><a href="{% url 'logout' %}">Logout</a></li>
+                                <li class="has-children">
+                                    <a href="#"><span>Games</span></a>
+                                    <ul class="dropdown arrow-top">
+                                      <li><a href="{% url 'staff_event_list' %}">View Games</a></li>
+                                      
+                                      </li>
+                                    </ul>
+                                </li>
 
+                                <li><a href="{% url 'staff_match_list' %}">Matches</a></li>
+
+                                <li><a href="{% url 'logout' %}">Logout</a></li>
+                              <li>{% if user.is_authenticated %}
+                                <p class="text-white small mb-0"> Hi <strong>{{ user.first_name|default:user.username|upper }}</strong></p>
+                                {% endif %} 
+                            </li>
                             </ul>
                             
                         </div>

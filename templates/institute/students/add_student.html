@@ -16,27 +16,121 @@
 <section class="contact-section spad">
 
 <div class="container mt-5">
-    <h1>{% if student %}Edit{% else %}Register{% endif %} Student</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h3 class="mb-0">{% if student %}Edit{% else %}Register{% endif %} Student</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
 
-    <!-- Display Form Errors -->
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            <strong>There were errors with your submission:</strong>
-            <ul>
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Username</label>
+                                {{ form.username }}
+                                {% for err in form.username.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                {{ form.email }}
+                                {% for err in form.email.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                {{ form.first_name }}
+                                {% for err in form.first_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                {{ form.last_name }}
+                                {% for err in form.last_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                {{ form.phone }}
+                                {% for err in form.phone.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Roll Number</label>
+                                {{ form.roll_number }}
+                                {% for err in form.roll_number.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Course</label>
+                                {{ form.course }}
+                                {% for err in form.course.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Date of Birth</label>
+                                {{ form.date_of_birth }}
+                                {% for err in form.date_of_birth.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                {{ form.address }}
+                                {% for err in form.address.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Events</label>
+                                <div class="form-check">
+                                    {{ form.event }}
+                                </div>
+                                {% for err in form.event.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                {{ form.password }}
+                                {% for err in form.password.errors %}
+                                    <div class="invalid-feedback d-block">{{ err }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">{% if student %}Update{% else %}Register{% endif %} Student</button>
+                            <a href="{% url 'student_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    {% endif %}
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{% if student %}Update{% else %}Register{% endif %} Student</button>
-    </form>
+    </div>
 </div>
 
 </section>

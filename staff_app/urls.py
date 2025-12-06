@@ -13,6 +13,9 @@ urlpatterns = [
     path('delete_institution/<int:institution_id>/', views.delete_institution, name='delete_institution'),
     path('institution_list/', views.institution_list, name='institution_list'),
     
+    path('event_list/', views.event_list, name='staff_event_list'),
+    path('match_list/', views.match_list, name='staff_match_list'),
+    
 
     
 ]

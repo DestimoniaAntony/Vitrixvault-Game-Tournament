@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 style="font-size:96px; margin-bottom:0;color:#e3e5ea;">500</h1>
+                <h2 style="margin-top:8px;">Server Error</h2>
+                
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact-section spad">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card shadow-lg staff-card">
+                    <div class="card-header text-center">
+                        <h3>Server Error</h3>
+                    </div>
+                    <div class="card-body">
+                <p style="color:#6b7280; margin-top:12px;">An unexpected error occurred on the server. Our team has been notified.</p>
+                <a href="/" class="btn btn-primary mt-3">Return Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+{% endblock %}

@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from Victrix_app.models import Staff
 from institution_app.models import Event, Match
+from staff_app.models import Institution
 
 # Create your views here.
 
@@ -39,3 +40,17 @@ def All_Match_results(request):
         'today': now().date(),
     }
     return render(request, 'admin/match_results.html', context)
+
+
+def institution_list(request):
+    institutions = Institution.objects.all().select_related('created_by', 'created_by__user')
+    return render(request, 'admin/institution_list.html', {'institutions': institutions})
+
+
+def institution_games(request, institution_id):
+    institution = get_object_or_404(Institution, id=institution_id)
+    games = Event.objects.filter(created_by=institution)
+    return render(request, 'admin/institution_games.html', {
+        'institution': institution,
+        'games': games
+    })

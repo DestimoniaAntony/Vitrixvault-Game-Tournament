@@ -1,0 +1,68 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Institutions</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-lg rounded border-0">
+                <div class="card-header bg-primary text-white text-center fw-bold">
+                    <h4 class="mb-0">Institutions List</h4>
+                </div>
+                <div class="card-body">
+                    {% if institutions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered text-center">
+                            <thead class="thead-dark bg-gradient bg-primary text-white">
+                                <tr>
+                                    <th>Institution Name</th>
+                                    <th>Address</th>
+                                    <th>Contact Phone</th>
+                                    <th>Staff Added By</th>
+                                    <th>Created At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for institution in institutions %}
+                                <tr>
+                                    <td class="fw-bold">{{ institution.name }}</td>
+                                    <td>{{ institution.address }}</td>
+                                    <td>{{ institution.contact_phone }}</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark px-3 py-2">
+                                            {{ institution.created_by.user.first_name }} {{ institution.created_by.user.last_name }}
+                                        </span>
+                                    </td>
+                                    <td>{{ institution.created_at|date:"d M Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'institution_games' institution.id %}" class="btn btn-sm btn-info">View Games</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p class="text-center text-danger fw-bold">No institutions added yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

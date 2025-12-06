@@ -27,6 +27,14 @@ urlpatterns = [
     path('institution/', include('institution_app.urls')),
     path('', include('Victrix_app.urls')),
 ]
-if settings.DEBUG:
-    urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
-    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Add static and media URL patterns. In development Django serves these
+# automatically when DEBUG=True. Adding them here ensures the files are
+# available when using runserver or the --insecure flag. Do NOT rely on
+# Django to serve static files in production; use a web server or WhiteNoise.
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Custom error handlers (templates `404.html` and `500.html` in project `templates/` folder)
+# These are used when DEBUG is False.
+handler404 = 'django.views.defaults.page_not_found'
+handler500 = 'django.views.defaults.server_error'

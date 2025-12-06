@@ -11,6 +11,8 @@ urlpatterns = [
     path('approve/<int:staff_id>/', views.approve_staff, name='approve_staff'),
     path('reject_staff/<int:staff_id>/', views.reject_staff, name='reject_staff'),
     path('All_Match_results', views.All_Match_results, name='All_Match_results'),
+    path('institution_list/', views.institution_list, name='admin_institution_list'),
+    path('institution/<int:institution_id>/games/', views.institution_games, name='institution_games'),
     
 ]
 if settings.DEBUG:

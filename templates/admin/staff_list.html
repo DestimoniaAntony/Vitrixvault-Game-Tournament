@@ -3,6 +3,20 @@
 
 {% block content %}
 
+<style>
+    /* Staff list table polish */
+    .toolbar { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .search-input { max-width:340px; }
+    .staff-table thead th { position:sticky; top:0; z-index:2; background: linear-gradient(180deg,#0d6efd,#0b5ed7); color:#fff; }
+    .staff-table tbody tr:nth-child(odd){ background:#fbfbfd; }
+    .staff-table tbody tr:hover{ background:#e9f2ff; }
+    .table td, .table th { vertical-align:middle; }
+    .truncate { max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .action-btns .btn { margin-right:6px; }
+    .status-badge { padding:.45em .6em; font-size:.85em; }
+    @media (max-width:767px){ .search-input { max-width:100%; } }
+</style>
+
 <!-- Display Messages -->
 {% if messages %}
 <div class="container mt-3">
@@ -30,16 +44,25 @@
 <!-- Staff Verification Table -->
 <div class="container mt-5">
     <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white text-center">
+        <div class="card-header text-white text-center" style="background-color:#0e0a31;">
             <h3>Staff Verification</h3>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover text-center">
+            <div class="toolbar">
+                <div class="d-flex align-items-center">
+                    <input id="staff-search" class="form-control search-input" placeholder="Search username, name or phone">
+                </div>
+                <div>
+                    <a href="#" id="refresh-btn" class="btn btn-outline-secondary btn-sm">Refresh</a>
+                </div>
+            </div>
+            <div class="table-responsive" >
+                <table class="table table-bordered table-hover text-center staff-table">
                     <thead class="table-dark">
                         <tr>
-                            <th>Username</th>
+                            
                             <th>Full Name</th>
+                            <th>Email ID</th>
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Status</th>
@@ -49,24 +72,27 @@
                     <tbody>
                         {% for staff in staff_members %}
                         <tr>
-                            <td>{{ staff.user.username }}</td>
-                            <td>{{ staff.user.first_name }} {{ staff.user.last_name }}</td>
+                            <!-- <td class="text-start"><strong>{{ staff.user.username }}</strong></td> -->
+                            <td class="text-start"><strong>{{ staff.user.first_name }} {{ staff.user.last_name }}</strong></td>
+                            <td class="text-start">{{ staff.user.email }}</td>
                             <td>{{ staff.phone }}</td>
-                            <td>{{ staff.address }}</td>
+                            <td class="text-start"><div class="truncate" title="{{ staff.address }}">{{ staff.address }}</div></td>
                             <td>
                                 {% if staff.is_active %}
-                                    <span class="badge bg-success">Approved</span>
+                                    <span class="badge bg-success status-badge">Approved</span>
                                 {% else %}
-                                    <span class="badge bg-danger">Pending</span>
+                                    <span class="badge bg-warning text-dark status-badge">Pending</span>
                                 {% endif %}
                             </td>
                             <td>
+                                <div class="action-btns">
                                 {% if not staff.is_active %}
                                     <a href="{% url 'approve_staff' staff.id %}" class="btn btn-success btn-sm">Approve</a>
                                     <a href="{% url 'reject_staff' staff.id %}" class="btn btn-danger btn-sm">Reject</a>
                                 {% else %}
                                     <span class="text-muted">Approved</span>
                                 {% endif %}
+                                </div>
                             </td>
                         </tr>
                         {% empty %}
@@ -80,5 +106,25 @@
         </div>
     </div>
 </div>
+
+<script>
+// Simple client-side filter for staff table
+document.addEventListener('DOMContentLoaded', function(){
+    const search = document.getElementById('staff-search');
+    if(search){
+        search.addEventListener('input', function(){
+            const q = (this.value || '').toLowerCase().trim();
+            document.querySelectorAll('table.staff-table tbody tr').forEach(function(row){
+                const text = row.textContent.toLowerCase();
+                row.style.display = q === '' || text.indexOf(q) !== -1 ? '' : 'none';
+            });
+        });
+    }
+    const refresh = document.getElementById('refresh-btn');
+    if(refresh){
+        refresh.addEventListener('click', function(e){ e.preventDefault(); location.reload(); });
+    }
+});
+</script>
 
 {% endblock %}

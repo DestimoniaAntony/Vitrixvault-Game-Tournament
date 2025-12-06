@@ -1,0 +1,86 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bs-text">
+                    <h2>Games - {{ institution.name }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-lg rounded border-0">
+                <div class="card-header bg-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="mb-0">Games for <strong>{{ institution.name }}</strong></h4>
+                        </div>
+                        <div class="col text-end">
+                            <a href="{% url 'admin_institution_list' %}" class="btn btn-secondary btn-sm">Back to Institutions</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Institution Contact:</strong> {{ institution.contact_phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Location:</strong> {{ institution.address }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if games %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered text-center">
+                            <thead class="thead-dark bg-gradient bg-primary text-white">
+                                <tr>
+                                    <th>Game Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Team Size</th>
+                                    <th>Visibility</th>
+                                    <th>Participants</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for game in games %}
+                                <tr>
+                                    <td class="fw-bold">{{ game.name }}</td>
+                                    <td>{{ game.date }}</td>
+                                    <td>{{ game.time }}</td>
+                                    <td>{{ game.location }}</td>
+                                    <td>{{ game.team_size }}</td>
+                                    <td>
+                                        <span class="badge {% if game.visibility %}bg-success{% else %}bg-danger{% endif %} text-white px-3 py-2">
+                                            {% if game.visibility %}Public{% else %}Private{% endif %}
+                                        </span>
+                                    </td>
+                                    <td>{{ game.students.count }}</td>
+                                    <td>{{ game.created_at|date:"d M Y" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p class="text-center text-warning fw-bold mt-4">No games conducted yet for this institution.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -99,8 +99,8 @@ def user_logout(request):
 from django.utils.timezone import now
 
 def Match_results(request):
-    events = Event.objects.all().order_by('date')
-    matches = Match.objects.all().order_by('-start_time')
+    events = Event.objects.filter(visibility=True).order_by('date')
+    matches = Match.objects.filter(event__visibility=True).order_by('-start_time')
 
     context = {
         'events': events,
@@ -108,3 +108,8 @@ def Match_results(request):
         'today': now().date(),
     }
     return render(request, 'match_results.html', context)
+
+
+
+
+

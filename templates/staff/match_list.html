@@ -1,0 +1,64 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Breadcrumb Section -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center text-white position-relative">
+        <h2 class="fw-bold">Matches</h2>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg rounded border-0">
+                <div class="card-header bg-primary text-white text-center fw-bold">
+                    <h4 class="mb-0">Matches</h4>
+                </div>
+                <div class="card-body">
+                   
+                    {% if matches %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered text-center">
+                            <thead class="thead-dark bg-gradient bg-primary text-white">
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Teams</th>
+                                    <th>Scores</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for match in matches %}
+                                <tr>
+                                    <td class="fw-bold">{{ match.event }}</td>
+                                    <td><strong>{{ match.team1 }}</strong> vs <strong>{{ match.team2 }}</strong></td>
+                                    <td class="fw-bold" style="background: rgba(0, 123, 255, 0.1); border-radius: 8px;">
+                                        {{ match.score_team1 }} - {{ match.score_team2 }}
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if match.status == 'Upcoming' %} bg-info text-dark 
+                                            {% elif match.status == 'Ongoing' %} bg-warning text-dark 
+                                            {% else %} bg-success text-white {% endif %} px-3 py-2">
+                                            {{ match.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p class="text-center text-danger fw-bold">No matches scheduled yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
